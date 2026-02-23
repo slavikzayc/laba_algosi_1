@@ -1,6 +1,7 @@
 import time
-
-start_time = time.perf_counter()
+import tracemalloc
+tracemalloc.start()
+time_start = time.perf_counter()
 
 def legacy_merge(A, p, q, r):
     n1 = q - p + 1
@@ -91,9 +92,13 @@ for number in list_of_numbers: #Проходим циклом по отсорт�
 
 open("output.txt", 'a').write(output_data+'\n') #Записываем в файл
 
-end_time = time.perf_counter()
-execution_time = end_time - start_time
-print(f"Время выполнения: {execution_time:.6f} секунд")
+time_end = time.perf_counter()
+print(f"Time to solve: {time_end - time_start:.5f} sec")
+snapshot = tracemalloc.take_snapshot()
+top_stats = snapshot.statistics("lineno")
+total_size = sum(stat.size for stat in top_stats)
+print("Total allocated size: %f MB" % (total_size / 10**6))
+tracemalloc.stop()
 
 #При сортировке вставкой время может превышать 0,001 секунд, в то время как при
 # сортировке слиянием оно не превышает 0,0004 секунды на данных:
