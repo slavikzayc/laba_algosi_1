@@ -41,8 +41,6 @@ def legacy_merge_sort(A, p, r):
 #1.2 Проверка алгоритма
 # функция, реализующая сортировку и вывод по входным данным из файла,
 def sort_with_file(filename):
-    tracemalloc.start()
-    time_start = time.perf_counter()
     list_of_numbers = []
     output_data = ""
 
@@ -159,6 +157,8 @@ def merge_sort(nums):
     right_list = merge_sort(nums[mid:]) # получаем правую отсортированную часть
 
     return merge(left_list, right_list) # возвращаем результат слияния левой и правой частей
+
+#sort_with_file("input.txt") по требованию в задании
 
 time_end = time.perf_counter()
 print(f"Time to solve: {time_end - time_start:.5f} sec")
