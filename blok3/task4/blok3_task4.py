@@ -1,7 +1,6 @@
 import time
 import tracemalloc
 import random
-from subprocess import check_output
 
 tracemalloc.start()
 time_start = time.perf_counter()

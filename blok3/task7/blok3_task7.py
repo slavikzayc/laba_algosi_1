@@ -1,6 +1,5 @@
 import time
 import tracemalloc
-import random
 tracemalloc.start()
 time_start = time.perf_counter()
 
@@ -42,23 +41,20 @@ sum1, start1, end1 = find_maximum_subarray(arr1)
 print(f"Массив: {arr1}")
 print(f"Максимальная сумма: {sum1}")
 print(f"Подмассив: {arr1[start1:end1+1]}")
-print(f"Индексы: [{start1}, {end1}]")
 
-# Все положительные
-arr2 = [1, 2, 3, 4, 5]
-sum2, start2, end2 = find_maximum_subarray(arr2)
-print(f"Массив: {arr2}")
-print(f"Максимальная сумма: {sum2}")
-print(f"Подмассив: {arr2[start2:end2+1]}")
-print(f"Индексы: [{start2}, {end2}]")
-
-# Все отрицательные
-arr3 = [-5, -4, -3, -2, -1]
-sum3, start3, end3 = find_maximum_subarray(arr3)
-print(f"Массив: {arr3}")
-print(f"Максимальная сумма: {sum3}")
-print(f"Подмассив: {arr3[start3:end3+1]}")
-print(f"Индексы: [{start3}, {end3}]")
+# # Все положительные
+# arr2 = [1, 2, 3, 4, 5]
+# sum2, start2, end2 = find_maximum_subarray(arr2)
+# print(f"Массив: {arr2}")
+# print(f"Максимальная сумма: {sum2}")
+# print(f"Подмассив: {arr2[start2:end2+1]}")
+#
+# # Все отрицательные
+# arr3 = [-5, -4, -3, -2, -1]
+# sum3, start3, end3 = find_maximum_subarray(arr3)
+# print(f"Массив: {arr3}")
+# print(f"Максимальная сумма: {sum3}")
+# print(f"Подмассив: {arr3[start3:end3+1]}")
 
 time_end = time.perf_counter()
 print(f"Time to solve: {time_end - time_start:.5f} sec")
