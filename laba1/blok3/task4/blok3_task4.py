@@ -40,9 +40,9 @@ def set_input(count):
 def read(filename):
     with open(filename) as f:  # читаем файл
         input_data = f.readlines()
-        input_list = [int(s) for s in input_data[0][1:].strip().split()]  # обрабатываем строки
-        input_to_find = [int(s) for s in input_data[1][1:].strip().split()]
-        return input_list, input_to_find
+        input_list = [int(s) for s in input_data[0].strip().split()]  # обрабатываем строки
+        input_to_find = [int(s) for s in input_data[1].strip().split()]
+        return input_list[1:], input_to_find[1:]
 
 def set_output(results):
     with open("output.txt", 'w') as f:

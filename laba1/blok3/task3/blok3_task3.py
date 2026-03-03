@@ -5,25 +5,23 @@ tracemalloc.start()
 time_start = time.perf_counter()
 
 inversions_count = 0
-#
+
 def merge_and_count(left_list, right_list):
     global inversions_count
-    # sorted_list = []
     merged = []
     i = j = 0
     left_list_length, right_list_length = len(left_list), len(right_list)
-
 
     while i < left_list_length and j < right_list_length: # алгоритм сортировки слиянием
         if left_list[i] <= right_list[j]:
             merged.append(left_list[i])
             i += 1
         else:
-            inversions_count += left_list_length - i #но если элемент из правой части больше, добавляем количество оставшихся элементов
+            inversions_count += left_list_length - i #но если элемент из правой части меньше, добавляем количество оставшихся элементов
             # из левого отсортированного массива, тк элемент из правого образует с ними инверсию
             merged.append(right_list[j])
             j += 1
-
+#n(n-1)/2
     merged.extend(left_list[i:])
     merged.extend(right_list[j:])
 
@@ -73,7 +71,7 @@ set_input(100000)
 count_inversions(get_input("input.txt")[1])
 set_output(inversions_count)
 
-#Проверка алгоритма
+# Проверка алгоритма
 # inversions_arr = count_inversions(get_input("input.txt")[1]) #считаем количество инверсий и записываем отсортированную последовательность
 # prev = inversions_count #сохраняем количество инверсий
 # count_inversions(inversions_arr) #считаем количество инверсий с необнуленным счетчиком
