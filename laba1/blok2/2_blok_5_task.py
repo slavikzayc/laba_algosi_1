@@ -2,7 +2,7 @@ import time
 
 
 def selection_sort(arr, n):
-    for i in range(n):
+    for i in range(n - 1):
         key = i # берем первый, в неотсортированной части массива, элемент как минимальный
         for j in range(i + 1, n):
             if arr[j] < arr[key]: # ищем для него место в отсортированной части
