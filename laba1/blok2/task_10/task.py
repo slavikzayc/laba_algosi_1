@@ -1,41 +1,105 @@
 import time
+import tracemalloc
 
-file = open('input.txt')
+def build_palindrome(s):
+    povtor = [0] * 26  # массив для подсчета букв (A-0, B-1, ..., Z-25)
 
-n = int(file.readline())
+    # Подсчет количества каждой буквы
+    for char in s:
+        povtor[ord(char) - ord('A')] += 1
 
-s = file.readline()
+    # Поиск лучшего центрального элемента
+    left = []
+    center = ''
+    max_odd = 0
+    center_index = -1
 
-file.close()
+    # Сначала найдем букву с максимальным нечетным количеством для центра
+    for i in range(26):
+        if povtor[i] % 2 != 0 and povtor[i] > max_odd:
+            max_odd = povtor[i]
+            center_index = i
 
-start = time.perf_counter()
+    # Если нашли нечетную букву, делаем ее центром
+    if center_index != -1:
+        center = chr(ord('A') + center_index)
+        povtor[center_index] -= 1  # убираем одну букву для центра
 
-povtor = [0] * 26 # в этом массиве хранится количество повторов каждой буквы (каждой букве соотв. свой индекс: A - 0, B - 1 etc.)
+    # Строим левую часть из оставшихся букв (в алфавитном порядке)
+    for i in range(26):
+        if povtor[i] > 0:
+            left.append(chr(ord('A') + i) * (povtor[i] // 2))
 
-# тут мы считаем сколько раз встречается каждый символ в строке
-for char in s:
-    povtor[ord(char) - ord('A')] += 1 # ord('A') = 65 по таблице аски, например ord('B') - ord('A') = 1
+    left = ''.join(left)
+    return left + center + left[::-1]
 
-# суть алгоритма: мы будем строить левую часть палиндрома, при наличии добавлять центральный элемент, а потом добавлять левую часть только перевернутую.
-left = []
 
-center = '' # для центрального элемента как раз
+def process_input(filename):
+    try:
+        with open(filename, 'r') as file:
+            # Чтение первой строки
+            first_line = file.readline().strip()
+            if not first_line:
+                return "Ошибка: файл пустой"
 
-for i in range(26): # тут мы будем проходить по нашему povtor и строить палиндром
-    if povtor[i] % 2 != 0 and not center: # если элемент встречается нечетное число раз и центра до сих пор нет, то этот элемент будет центром.
-        center = chr(ord('A') + i) # доп к коменту выше: центральным элементом может быть только элемент с нечетным количеством повторов, так как у него нет всех полных пар
-    left.append(chr(ord('A') + i) * (povtor[i] // 2)) # chr(ord('A') + i) даёт нам наш текущий элемент, мы его повторяем половину раз, так как пока что мы делаем только левую часть.
+            # Проверка числа n
+            try:
+                n = int(first_line)
+                if n < 1 or n > 100000:
+                    return "Ошибка: n должно быть в интервале от 1 до 100000 включительно"
+            except ValueError:
+                return "Ошибка: n должно быть целым числом"
 
-left = ''.join(left)
+            # Чтение строки с буквами
+            s = file.readline().strip()
 
-res = left + center + left[::-1] # вот тут мы собираем наш палиндром
+            # Специальная проверка для n=1
+            if n == 1:
+                if len(s) != 1:
+                    return f"Ошибка: при n=1 ожидается 1 символ, получено {len(s)}"
+                if not ('A' <= s[0] <= 'Z'):
+                    return "Ошибка: символ должен быть заглавной латинской буквой"
+                return s  # для одной буквы палиндром - это сама буква
 
-end = time.perf_counter()
+            # Общая проверка для остальных случаев
+            if not s:
+                return "Ошибка: строка пустая"
 
-output = open('output.txt', 'w')
+            if len(s) != n:
+                return f"Ошибка: ожидалось {n} символов, получено {len(s)}"
 
-output.write(res)
+            # Проверка символов
+            invalid_chars = []
+            for c in s:
+                if not ('A' <= c <= 'Z'):
+                    invalid_chars.append(c)
 
-output.close()
+            if invalid_chars:
+                return f"Ошибка: недопустимые символы: {', '.join(invalid_chars)}"
 
-print(end - start)
+            # Если все проверки пройдены - строим палиндром
+            return build_palindrome(s)
+
+    except FileNotFoundError:
+        return "Ошибка: файл не найден"
+    except Exception as e:
+        return f"Неожиданная ошибка: {e}"
+
+
+# Основная программа
+time_start = time.perf_counter()
+tracemalloc.start()
+
+result = process_input('input.txt')
+
+with open('output.txt', 'w') as output:
+    output.write(result)
+
+time_end = time.perf_counter()
+print(f"Time to solve: {time_end - time_start:.5f} sec")
+
+snapshot = tracemalloc.take_snapshot()
+top_stats = snapshot.statistics("lineno")
+total_size = sum(stat.size for stat in top_stats)
+print("Total allocated size: %f MB" % (total_size / 10 ** 6))
+tracemalloc.stop()
