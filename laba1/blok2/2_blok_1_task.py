@@ -1,15 +1,8 @@
-# -*- coding: utf-8 -*-
-# ������� ���� ����� ��� ��������� ������������ �� �������
 import time
-import tracemalloc
-tracemalloc.start()
-time_start = time.perf_counter()
+
 # 1
 
-start = time.perf_counter()
-
-# ��������� ���� � ������ ��� ������� ������
-file = open('input.txt') 
+file = open('input.txt')
 
 n = int(file.readline())
 
@@ -17,20 +10,17 @@ arr = list(map(int, file.readline().split()))
 
 file.close()
 
+start = time.perf_counter()
 
-# ������� ���� �������: ������ ������� �� ��� ����� ��������������� � ���(����� � ������ ��������������)
-# � ����� ����� ������ ������ �������
-# �� ����� �������� �� ������ �� ������� � ���������� �� � ��� ���������������� ����������, ������� ���������� ��� ������� � ������ ��� ���� ��� �����(� ������)
 for i in range(1, n):
-    key = arr[i] # �������, �������� �� ����� ������ �����(����)
-    j = i - 1 # ������ ����������� ��������
+    key = arr[i] # первый элемент из неотсортированной части массива
+    j = i - 1 # индекс последнего элемента из отсортированной части массива
 
-    while j >=0 and arr[j] > key: # ���� �� ����� ����� ���������� ������� � ���������� ������� ������ ������ �����
-        arr[j + 1] = arr[j] # �� ����� ������ ���������� ��� ���� ����� � ������ �������
-        j -= 1 # ����� ���������� �������
-    arr[j + 1] = key # �� ����� ����� ��� �����, ������ �� ������ �������� ������� �� ���� � ������, ��� ���� �� ����� ������� �� ������
+    while j >= 0 and arr[j] > key:
+        arr[j + 1] = arr[j]
+        j -= 1
+    arr[j + 1] = key
 
-# �� ��� ������ ��� �� ���� ����������� �����, ������ ��� ������� ������������ ������� ������, � ������ � �������� ���� ��� ��� ���
 output = open('output.txt', 'w')
 
 for el in arr:
@@ -38,11 +28,6 @@ for el in arr:
     output.write(' ')
 
 output.close()
+end = time.perf_counter()
 
-time_end = time.perf_counter()
-print(f"Time to solve: {time_end - time_start:.5f} sec")
-snapshot = tracemalloc.take_snapshot()
-top_stats = snapshot.statistics("lineno")
-total_size = sum(stat.size for stat in top_stats)
-print("Total allocated size: %f MB" % (total_size / 10**6))
-tracemalloc.stop()
+print(end - start)
