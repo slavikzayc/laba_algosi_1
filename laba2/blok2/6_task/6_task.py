@@ -2,8 +2,7 @@ import time
 import tracemalloc
 import random
 
-tracemalloc.start()
-time_start = time.perf_counter()
+
 
 def parse_input(): #парсим файл
     with open("input.txt") as f:
@@ -15,6 +14,8 @@ def parse_input(): #парсим файл
 
 parsed_file=parse_input()
 commands = parsed_file[1]
+tracemalloc.start()
+time_start = time.perf_counter()
 
 stack_in = []
 stack_out = []
@@ -52,12 +53,12 @@ for command in commands:
         else:
             output.append(str(current_min))
         #записываем вывод
-
+time_end = time.perf_counter()
 with open("output.txt", 'w') as f:
     f.truncate()
     f.write('\n'.join(output)) #записываем в файл
 
-time_end = time.perf_counter()
+
 print(f"Time to solve: {time_end - time_start:.5f} sec")
 snapshot = tracemalloc.take_snapshot()
 top_stats = snapshot.statistics("lineno")
