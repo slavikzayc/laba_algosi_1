@@ -1,9 +1,6 @@
 import time
 import tracemalloc
 import random
-from distutils.dist import command_re
-
-from laba_algosi_1.laba1.blok2.task_10.task import output
 
 tracemalloc.start()
 time_start = time.perf_counter()
