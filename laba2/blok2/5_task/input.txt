@@ -1,11 +1,11 @@
 10
-push 84
-push 81
+push 52
+push 83
 pop
-pop
-push 59
-pop
+push 74
+max
+push 1
 push 10
+max
 pop
-push 40
 max

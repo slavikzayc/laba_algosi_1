@@ -39,7 +39,8 @@ for command in commands:
                 else:
                     current_min_out = stack_out[-1][1]#фиксируем минимум на данный момент
                     stack_out.append((value, min(value, current_min_out)))#добавляем в выходной стек значение и минимальное значение на данный момент
-        stack_out.pop() #в случае, если входной стек пустой, просто удаляем последний элемент из выходного стека
+        if stack_out:
+            stack_out.pop() #в случае, если входной стек пустой, просто удаляем последний элемент из выходного стека
     elif command == '?':
         # Берём минимум из stack_in (если есть) или бесконечность
         min_in = stack_in[-1][1] if stack_in else float('inf')

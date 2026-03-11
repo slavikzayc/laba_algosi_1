@@ -28,7 +28,6 @@ def monotonous_falling(count):
         commands.append(f"push {i}")
     commands.append("max")
     set_input(commands)
-
 def equal_values(count):
     commands = []
     for _ in range(count):
@@ -65,7 +64,6 @@ def random_commands(count):
             commands.append("max")
 
     set_input(commands)
-
 def large_numbers(count):
     commands = []
     for _ in range(count):
