@@ -2,7 +2,7 @@ queuee = [] # массив  для очереди
 
 file = open('input.txt')
 
-n = int(file.readline())
+n = int(file.readline()) # количество операций
 
 lines = [l for l in file.readlines()] # массив операций
 
