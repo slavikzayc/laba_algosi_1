@@ -10,14 +10,11 @@ Median-QuickSort (медиана трёх).
 Он делает разбиение на 3 списка (меньше/равно/больше pivot) и рекурсивно сортирует части.
 """
 
-from __future__ import annotations  # включает "отложенные" аннотации типов (удобно для list[int] и т.п.)
-
 import random  # модуль случайных чисел (нужен для randomized pivot и генерации тестовых данных)
 import time  # модуль времени (нужен для замеров скорости)
-from typing import Callable  # Callable нужен, чтобы типизировать "функцию выбора pivot"
 
 
-def _median3(a: int, b: int, c: int) -> int:  # функция для медианы из трёх чисел
+def _median3(a, b, c):  # функция для медианы из трёх чисел
     """Возвращает медиану (среднее по величине) из трёх чисел a, b, c."""  # докстрока: что делает функция
 
     if a <= b:  # если a не больше b
@@ -34,7 +31,7 @@ def _median3(a: int, b: int, c: int) -> int:  # функция для медиа
         return b  # иначе порядок c < b < a, медиана тут b
 
 
-def _quicksort(arr: list[int], choose_pivot: Callable[[list[int]], int]) -> list[int]:  # общий QuickSort
+def _quicksort(arr, choose_pivot):  # общий QuickSort
     """Общий QuickSort: choose_pivot(arr) должен вернуть pivot-значение."""  # что ожидаем от choose_pivot
 
     if len(arr) <= 1:  # база рекурсии: массив из 0/1 элемента уже отсортирован
@@ -42,9 +39,9 @@ def _quicksort(arr: list[int], choose_pivot: Callable[[list[int]], int]) -> list
 
     pivot = choose_pivot(arr)  # выбираем опорный элемент (pivot) по заданной стратегии
 
-    less: list[int] = []  # сюда будем складывать элементы строго меньше pivot
-    equal: list[int] = []  # сюда будем складывать элементы равные pivot
-    greater: list[int] = []  # сюда будем складывать элементы строго больше pivot
+    less = []  # сюда будем складывать элементы строго меньше pivot
+    equal = []  # сюда будем складывать элементы равные pivot
+    greater = []  # сюда будем складывать элементы строго больше pivot
 
     for x in arr:  # одним проходом разбрасываем элементы по 3 спискам
         if x < pivot:  # если x меньше pivot
@@ -58,30 +55,30 @@ def _quicksort(arr: list[int], choose_pivot: Callable[[list[int]], int]) -> list
     return _quicksort(less, choose_pivot) + equal + _quicksort(greater, choose_pivot)  # итоговая склейка
 
 
-def quicksort(arr: list[int]) -> list[int]:  # обычный QuickSort
+def quicksort(arr):  # обычный QuickSort
     """Обычный QuickSort: pivot = последний элемент."""  # описание стратегии
 
     return _quicksort(arr, lambda a: a[-1])  # pivot берём как последний элемент текущего (под)массива
 
 
-def randomized_quicksort(arr: list[int], seed: int | None = 0) -> list[int]:  # randomized QuickSort
+def randomized_quicksort(arr, seed=0):  # randomized QuickSort
     """Randomized-QuickSort: pivot = случайный элемент."""  # описание стратегии
 
     rnd = random.Random(seed)  # создаём отдельный генератор случайных чисел (не трогаем глобальный random)
     return _quicksort(arr, lambda a: a[rnd.randrange(len(a))])  # pivot — случайный элемент из текущего (под)массива
 
 
-def median_quicksort(arr: list[int]) -> list[int]:  # median-of-three QuickSort
+def median_quicksort(arr):  # median-of-three QuickSort
     """Median-QuickSort: pivot = медиана трёх (первый/средний/последний)."""  # описание стратегии
 
-    def choose(a: list[int]) -> int:  # внутренняя функция выбора pivot для текущего (под)массива a
+    def choose(a):  # внутренняя функция выбора pivot для текущего (под)массива a
         mid = len(a) // 2  # индекс среднего элемента (для длины 5 это 2; для длины 4 это 2 тоже)
         return _median3(a[0], a[mid], a[-1])  # pivot-значение = медиана из (первый, средний, последний)
 
     return _quicksort(arr, choose)  # запускаем общий QuickSort с нашей стратегией pivot
 
 
-def _make_datasets(n: int, seed: int = 0) -> dict[str, list[int]]:  # генерация тестовых наборов
+def _make_datasets(n, seed=0):  # генерация тестовых наборов
     """Несколько типов входных данных для сравнения."""  # что генерируем
 
     rnd = random.Random(seed)  # отдельный RNG, чтобы генерация данных была повторяемой
@@ -108,7 +105,7 @@ def _make_datasets(n: int, seed: int = 0) -> dict[str, list[int]]:  # генер
     }  # конец словаря
 
 
-def _time_once(fn: Callable[[list[int]], list[int]], data: list[int]) -> float:  # замер времени
+def _time_once(fn, data):  # замер времени
     """Время одного запуска fn(data) в секундах."""  # описание
 
     t0 = time.perf_counter()  # старт таймера (высокоточный)
@@ -116,12 +113,12 @@ def _time_once(fn: Callable[[list[int]], list[int]], data: list[int]) -> float: 
     return time.perf_counter() - t0  # возвращаем разницу (сколько заняло)
 
 
-def compare_sorts(n: int = 3000, repeats: int = 3) -> None:  # сравнение алгоритмов
+def compare_sorts(n=3000, repeats=3):  # сравнение алгоритмов
     """Печатает сравнение 3 вариантов QuickSort на разных данных."""  # описание
 
     datasets = _make_datasets(n)  # генерируем наборы данных
 
-    algos: list[tuple[str, Callable[[list[int]], list[int]]]] = [  # список алгоритмов: (название, функция)
+    algos = [  # список алгоритмов: (название, функция)
         ("QuickSort(last)", quicksort),  # обычный QuickSort
         ("QuickSort(random)", lambda a: randomized_quicksort(a, seed=0)),  # randomized QuickSort (seed фиксируем)
         ("QuickSort(median3)", median_quicksort),  # median-of-three QuickSort
