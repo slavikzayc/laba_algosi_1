@@ -1,7 +1,10 @@
-def calc_fib(n):                                #Рекурсивная функция для подсчета числа
+def calc_fib(n):                                #Итеративный алгоритм для подсчета числа
     if (n<=1):
         return n
-    return calc_fib(n-1)+calc_fib(n-2)
+    prev,curr=0,1
+    for i in range(2,n+1):
+        prev,curr = curr, prev+curr
+    return curr
 
 with open('input_1.2.txt', 'r') as file_in:     #Открытие входного файла для чтения
     n=int(file_in.readline())

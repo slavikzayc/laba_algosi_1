@@ -1,8 +1,11 @@
 with open ('input_1.1.3.txt','r') as file_input:  #Открытие входного файла для чтения
     line=file_input.readline()  #Чтение строки
-    a,b=map(int,line.split())  #Перевод строки в два числа
+    numbers=list(map(int,line.split()))
 
-result = a+b
-
-with open ('output_1.1.3.txt','w') as file_output:  #Открытие выходного файла для записи
-    file_output.write(str(result))  #Запись результата в файл
+if len(numbers)==2:
+    a,b=numbers[0],numbers[1]
+    result = a+b
+    with open ('output_1.1.3.txt','w') as file_output:  
+        file_output.write(str(result))
+else:
+    print('Ошибка')
