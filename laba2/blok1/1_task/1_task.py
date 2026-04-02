@@ -1,15 +1,13 @@
 def anti_qsort(n):
     file = open('output.txt', 'w')
 
-    if n == 1:
+    if n == 1: # если n = 1, то возможна единственная перестановка
         file.write('1')
         return
 
-    arr = [1, 2]
+    arr = list(range(1, n + 1))
 
-    for i in range(2, n):
-        arr.append(i + 1)
-
+    for i in range(2, n): # меняем последний элемент каждого подмассива с элементом посередине этого же подмассива
         arr[i // 2], arr[i] = arr[i], arr[i // 2]
 
     for el in arr:
