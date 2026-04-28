@@ -23,7 +23,7 @@ def solve():
     earliest_arrival = [INF] * (num_villages + 1)
     earliest_arrival[start_village] = 0  # в начальный момент 0 мы уже в start_village
 
-    # Беллман-Форд: не более num_villages - 1 пересадок
+    # не более num_villages - 1 пересадок
     for _ in range(num_villages - 1):
         # копия, чтобы обновления одной итерации не влияли на другие обновления в этой же итерации
         updated_arrival = earliest_arrival[:]
